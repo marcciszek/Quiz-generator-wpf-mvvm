@@ -1,0 +1,124 @@
+﻿<Window x:Class="wpf_mvvm_projekt_1_quiz_generator.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:qv="clr-namespace:wpf_mvvm_projekt_1_quiz_generator.View"
+        xmlns:vm="clr-namespace:wpf_mvvm_projekt_1_quiz_generator.ViewModel"
+        xmlns:local="clr-namespace:wpf_mvvm_projekt_1_quiz_generator"
+        mc:Ignorable="d"
+        Title="Marcin Ciszek quiz generator" Height="600" Width="1000">
+
+    <Window.DataContext>
+        <vm:QuizViewModel x:Name="viewModel"/>
+    </Window.DataContext>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="13*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="5*"/>
+        </Grid.ColumnDefinitions>
+
+        <DockPanel Grid.Column="0"
+                   Grid.Row="0"
+                   Margin="10"
+                   Background="AntiqueWhite">
+            <TextBox Text="{Binding Title, Mode=TwoWay}"
+                     DockPanel.Dock="Top"
+                     VerticalAlignment="Center"
+                     HorizontalAlignment="Stretch"
+                     TextAlignment="Center"
+                     Padding="10"
+                     Margin="10">
+            </TextBox>
+            <TextBox Text="{Binding FileName, Mode=TwoWay}"
+                     DockPanel.Dock="Top"
+                     TextAlignment="Center"
+                     Padding="10"
+                     Margin="10">
+            </TextBox>
+            <ListBox Margin="10" 
+                     Padding="10" 
+                     ItemsSource="{Binding CurrentQuestionsObservable, UpdateSourceTrigger=PropertyChanged}"
+                     SelectedIndex="{Binding CurrentSelectedQuestionIdx, Mode=TwoWay}">
+                <!--SelectedIndex="{Binding CurrentSelectedQuestion, Mode=TwoWay}">
+                     SelectedItem="{Binding CurrentSelectedQuestion}"-->
+            </ListBox>
+            
+        </DockPanel>
+        
+        <qv:QuestionView Grid.Column="2"
+                         Grid.Row="0"
+                         Margin="10"
+                         Background="AliceBlue"
+                         Question = "{Binding CurrentQuestion, Mode=TwoWay}"
+                         Answer_1 = "{Binding CurrentAnswer_1, Mode=TwoWay}"
+                         Answer_2 = "{Binding CurrentAnswer_2, Mode=TwoWay}"
+                         Answer_3 = "{Binding CurrentAnswer_3, Mode=TwoWay}"
+                         Answer_4 = "{Binding CurrentAnswer_4, Mode=TwoWay}"
+                         Correct  = "{Binding CorrectAnswer,   Mode=TwoWay}"/>
+
+
+        <DockPanel Grid.Column="0"
+                    Grid.Row="1"
+                    Margin="10"
+                    LastChildFill="False">
+            <Button DockPanel.Dock="Left"
+                    Content="Zapisz"
+                    Margin="10"
+                    MinWidth="100"
+                    MaxHeight="37.872"
+                    Command="{Binding SaveQuiz}"/>
+            <Button DockPanel.Dock="Right"
+                    Content="Wczytaj"
+                    Margin="10"
+                    MinWidth="100"
+                    MaxHeight="37.872"
+                    Command="{Binding LoadQuiz}"/>
+        </DockPanel>
+
+        <DockPanel Grid.Column="2"
+                   Grid.Row="1"
+                   Margin="10">
+            <Button DockPanel.Dock="Left"
+                    Content="Poprzednie"
+                    Margin="10"
+                    MinWidth="100"
+                    MaxHeight="37.872"
+                    Command="{Binding PreviousQuestion}"/>
+            <Button DockPanel.Dock="Right"
+                    Content="Nastepne"
+                    Margin="10"
+                    MinWidth="100"
+                    MaxHeight="37.872"
+                    Command="{Binding NextQuestion}"/>
+            
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+                
+                    <Button HorizontalAlignment="Center"
+                        Content="Dodaj"
+                        Margin="10"
+                        MinWidth="100"
+                        MaxHeight="37.872"
+                        Command="{Binding AddQuestion}"/>
+                
+                    <Button HorizontalAlignment="Center"
+                        Content="Edytuj"
+                        Margin="10"
+                        MinWidth="100"
+                        MaxHeight="37.872"
+                        Command="{Binding EditQuestion}"/>
+            </StackPanel>
+            
+        </DockPanel>
+
+    </Grid>
+    
+    
+</Window>
