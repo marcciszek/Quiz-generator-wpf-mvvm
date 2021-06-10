@@ -71,12 +71,15 @@ namespace wpf_mvvm_projekt_1_quiz_generator.ViewModel
         public Int32 CurrentSelectedQuestionIdx
         {
             get {
-                if (idxOfCurrentQuestion == questionsList.questionCounter)
+                if (idxOfCurrentQuestion == questionsList.QuestionCounter)
                     return -1;
                 return idxOfCurrentQuestion; }
             set { 
-                idxOfCurrentQuestion = value;
-                currentQuestion = questionsList.listOfQuestions[idxOfCurrentQuestion];
+                if (value != -1)
+                {
+                    idxOfCurrentQuestion = value;
+                    currentQuestion = questionsList.ListOfQuestions[idxOfCurrentQuestion];
+                }
 
                 CurrentQuestion = currentQuestion.QuestionText;
                 CurrentAnswer_1 = currentQuestion.Ans1;
@@ -174,7 +177,7 @@ namespace wpf_mvvm_projekt_1_quiz_generator.ViewModel
 
                             onPropertyChange(nameof(CurrentSelectedQuestionIdx));
                         },
-                        arg => idxOfCurrentQuestion < questionsList.questionCounter);
+                        arg => idxOfCurrentQuestion < questionsList.QuestionCounter);
                 }
                 return nextQuestion;
             }
@@ -264,7 +267,8 @@ namespace wpf_mvvm_projekt_1_quiz_generator.ViewModel
                                 !string.IsNullOrEmpty(CurrentAnswer_2) &&
                                 !string.IsNullOrEmpty(CurrentAnswer_3) &&
                                 !string.IsNullOrEmpty(CurrentAnswer_4) &&
-                                CorrectAnswer != null)
+                                CorrectAnswer != null &&
+                                CurrentSelectedQuestionIdx != -1)
                         );
                 }
                 return _editQuestion;
@@ -316,15 +320,16 @@ namespace wpf_mvvm_projekt_1_quiz_generator.ViewModel
                             {
                                 string filename = dlg.FileName;
 
-                                questionsList.LoadQuiz(filename);
+                                Title = questionsList.LoadQuiz(filename);
+                                FileName = dlg.SafeFileName.Replace(".txt","");
 
                                 currentQuestionsObservable = new ObservableCollection<Question>();
-                                foreach (Question item in questionsList.listOfQuestions)
+                                foreach (Question item in questionsList.ListOfQuestions)
                                 {
                                     currentQuestionsObservable.Add(new Question(item));
                                 }
 
-                                currentQuestion = questionsList.listOfQuestions[0];
+                                currentQuestion = questionsList.ListOfQuestions[0];
 
                                 onPropertyChange(nameof(CurrentQuestionsObservable));
                                 onPropertyChange(nameof(CurrentQuestion));

@@ -8,8 +8,16 @@ namespace wpf_mvvm_projekt_1_quiz_generator.Model
 {
     public class Quiz
     {
-        public List<Question> listOfQuestions;
-        public int questionCounter;
+        private List<Question> listOfQuestions;
+        private int questionCounter;
+
+        public List<Question> ListOfQuestions { 
+            get { return listOfQuestions; }
+            set { listOfQuestions = value; }
+        }
+        public int QuestionCounter { 
+            get { return questionCounter; }
+            set { questionCounter = value; } }
 
         public Quiz()
         {
@@ -93,8 +101,9 @@ namespace wpf_mvvm_projekt_1_quiz_generator.Model
             return false;
         }
 
-        public void LoadQuiz(string path)
+        public string LoadQuiz(string path)
         {
+            string quizTitle = "";
             if(File.Exists(path))
             {
                 using (StreamReader sr = File.OpenText(path))
@@ -104,7 +113,7 @@ namespace wpf_mvvm_projekt_1_quiz_generator.Model
 
                     string s;
 
-                    if ((s = sr.ReadLine()) != null) ;
+                    if ((s = sr.ReadLine()) != null) { quizTitle = s; };
 
                     int iterator = 0;
                     Question question = new Question();
@@ -160,6 +169,7 @@ namespace wpf_mvvm_projekt_1_quiz_generator.Model
                     }      
                 }
             }
+            return quizTitle;
         }
     }
 }
